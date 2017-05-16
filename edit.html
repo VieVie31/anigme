@@ -135,19 +135,14 @@ function save_edition() {
 
 	var current_enigme = $('#select_enigm_to_edit').val();
 	var db = firebase.database();
-	var ref = db.ref("enigmes_list/" + current_enigme);
+	var path = "enigmes_list/" + current_enigme + "/";
+	//update fields
+	db.ref(path + "title").set(title);
+	db.ref(path + "text").set(content);
 	//update the solution of not...
 	if (solution)
-		ref.set({
-			title: title,
-			text: content,
-			solution: solution
-		});
-	else
-		ref.set({
-			title: title,
-			text: content
-		});
+		db.ref(path + "solution").set(solution);
+
 
 }
 
