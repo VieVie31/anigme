@@ -31,7 +31,7 @@ function load_enigm_data() {
 	$("footer").css("display", (get_current_enign_name() === "final" ? "none" : "block"));
 
 	var db = firebase.database();
-	var ref = db.ref(get_current_enign_name() + '/');
+	var ref = db.ref("enigmes_list/" + get_current_enign_name() + '/');
 	ref.once("value", function(v) {
 		$("#enigme_title").text(v.val().title);
 		$("#enigme_content").text(v.val().text);
@@ -40,7 +40,7 @@ function load_enigm_data() {
 
 function check_enigme_solution (e) {
 	var db = firebase.database();
-	var ref = db.ref(get_current_enign_name() + '/');
+	var ref = db.ref("enigmes_list/" + get_current_enign_name() + '/');
 	ref.once("value", function(v) {
 		if ($("#enigme_solution").val().toLowerCase() == v.val().solution.toLowerCase()) { //not case sensitive...
 			//TODO: go to the next enigm
