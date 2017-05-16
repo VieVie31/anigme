@@ -1,0 +1,27 @@
+body {
+	background-color: #ececec;
+}
+
+nav {
+	position: fixed;
+}
+
+.footer {
+	position: fixed;
+	background-color: #969696;
+}
+
+#page_content {
+	overflow-y: auto;
+}
+
+#enigme_title {
+	margin-bottom: 1em;
+}
+
+p {
+	word-wrap: break-word;
+	text-align: justify;
+	margin-bottom: 2em;
+}
+

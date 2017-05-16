@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
+<head runat="server">
+	<title>@nigme</title>
     <meta charset="utf-8">
-    <title>@nigme</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <!-- firebase : those scripts MUST be imported before all the other... -->
     <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js"></script>
@@ -21,7 +22,72 @@
     <!-- jQuery -->
     <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
     <script src='https://code.jquery.com/ui/1.12.0/jquery-ui.min.js'></script>
+    <!-- bootstrap -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css" media="screen" />
+    <!-- @nigme stuffs -->
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
+	<form id="form1" runat="server">
+		<div id="divContainer" class="container">
+			<!-- navigation -->
+			<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+				<div id="divContainer" class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarContent">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand navbar-left" href="#">
+							@nigmes
+						</a>
+					</div>
+
+					<div id="navbarContent" class="collapse navbar-collapse">
+						<ul class="nav navbar-nav navbar-right">
+							<li class="active"><a href="#">First Enigme</a></li>
+							<li><a href="#">Current Enigme</a></li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+
+			<!-- content -->
+			<div id="page_content">
+				<div class="panel panel-default">
+					<div id="card_content" class="panel-body">
+						<center>
+							<h1 id="enigme_title">Enigme 42.</h1>
+						</center>
+
+						<p id="enigme_content">
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+						</p>
+					</div>
+				</div>
+						
+				<div id="end_of_content"></div>
+			</div>
+		</div>
+
+      <footer class="footer navbar-fixed-bottom">
+      	<div style="margin: 15px;">
+	      	<div class="input-group">
+		      <input type="text" class="form-control" placeholder="Type solution here...">
+		      <span class="input-group-btn">
+		        <button class="btn btn-secondary" type="button">Check !</button>
+		      </span>
+		    </div>
+		</div>
+	</footer>
+</form>
+
+<script type="text/javascript" src="./js/style.js"></script>
+
 </body>
 </html>
