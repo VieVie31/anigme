@@ -46,10 +46,12 @@ function load_data() {
 		v = v.val();
 		$("#edit_enigme_title").val(v.title);
 		$("#edit_enigme_content").val(v.text);
+		$("#edit_enigme_solution").val(''); //delete the previously written solution
 
 		$("#edit_enigme_title").attr("readonly", false);
 		$("#edit_enigme_content").attr("readonly", false);
-		$("#edit_enigme_solution").attr("readonly", false);
+		//the final card should be a conggrat card so no enigm !!
+		$("#edit_enigme_solution").attr("readonly", $('#select_enigm_to_edit').val() == "final");
 	});
 }
 
