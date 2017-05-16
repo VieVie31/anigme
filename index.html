@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>@nigme</title>
+    <!-- firebase : those scripts MUST be imported before all the other... -->
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-database.js"></script>
+    <!-- load the firebase api keys / config... -->
+    <script>
+    	function add_script(src) {
+            var s = document.createElement('script');
+            s.setAttribute('src', src);
+            document.head.appendChild(s);
+        }
+
+        add_script("./js/firebase_api_config.js");
+    </script>
+    <!-- jQuery -->
+    <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
+    <script src='https://code.jquery.com/ui/1.12.0/jquery-ui.min.js'></script>
+</head>
+<body>
+</body>
+</html>
