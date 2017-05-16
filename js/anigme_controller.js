@@ -42,7 +42,7 @@ function check_enigme_solution (e) {
 	var db = firebase.database();
 	var ref = db.ref("enigmes_list/" + get_current_enign_name() + '/');
 	ref.once("value", function(v) {
-		if ($("#enigme_solution").val().toLowerCase() == v.val().solution.toLowerCase()) { //not case sensitive...
+		if ($("#enigme_solution").val().trim().toLowerCase().hashCode() == v.val().solution) { //not case sensitive...
 			//TODO: go to the next enigm
 			toastr.success("Good answer !! :D");
 

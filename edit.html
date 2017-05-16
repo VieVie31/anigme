@@ -22,7 +22,7 @@
                 }
             return hash;
         };
-        
+
     	function add_script(src) {
             var s = document.createElement('script');
             s.setAttribute('src', src);
@@ -153,7 +153,7 @@ function save_edition() {
 	db.ref(path + "text").set(content);
 	//update the solution of not...
 	if (solution)
-		db.ref(path + "solution").set(solution);
+		db.ref(path + "solution").set(solution.trim().toLowerCase().hashCode());
 
 
 }
