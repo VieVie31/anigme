@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head runat="server">
+	<title>@nigme</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <!-- firebase : those scripts MUST be imported before all the other... -->
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-database.js"></script>
+    <!-- load the firebase api keys / config... -->
+    <script>
+    	function add_script(src) {
+            var s = document.createElement('script');
+            s.setAttribute('src', src);
+            document.head.appendChild(s);
+        }
+
+        add_script("./js/firebase_api_config.js");
+    </script>
+    <!-- jQuery -->
+    <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
+    <script src='https://code.jquery.com/ui/1.12.0/jquery-ui.min.js'></script>
+    <!-- bootstrap -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css" media="screen" />
+    <!-- bootbox.js at 4.4.0 -->
+	<script src="https://rawgit.com/makeusabrew/bootbox/f3a04a57877cab071738de558581fbc91812dce9/bootbox.js"></script>
+    <!-- bootstrap-select -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+    <!-- toastr : for notifications managing... -->
+    <link href="./css/toastr.min.css" rel="stylesheet"/>
+    <script src="./js/toastr.min.js"></script>
+    <!-- @nigme stuffs -->
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+	<form id="form1" runat="server">
+		<div id="divContainer" class="container">
+			<!-- navigation -->
+			<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+				<div id="divContainer" class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarContent">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand navbar-left" href="#">
+							@nigmes
+						</a>
+					</div>
+
+					<div id="navbarContent" class="collapse navbar-collapse">
+						<ul class="nav navbar-nav navbar-right">
+							<li class="nav_list"><a href="anigme.html">Go to play...</a></li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+
+			<!-- content -->
+			<div id="page_content">
+				<div class="panel panel-default">
+					<div id="card_content" class="panel-body">
+						<center>
+							<h1>Edition</h1>
+						</center>
+						<br/>
+						<center id="waiting_connection"><i class="fa fa-spinner fa-spin" style="font-size:24px"></i></center>
+						
+						<div id="edition_container" style="display: none;">
+							<!-- choose wich enigme to edit -->
+							<center>
+								<select id="select_enigm_to_edit" class="selectpicker" style="width: 100%;">
+								</select>
+							</center>
+							<br/>
+
+							<div id="edition_group">
+								<div class="input-group">
+									<span class="input-group-addon" id="basic-addon1">Title &nbsp; &nbsp; &nbsp;</span>
+									<input id="edit_enigme_title" type="text" class="form-control" placeholder="Title of the enigme..." required readonly>
+								</div>
+								<br/>
+								<div class="input-group">
+									<span class="input-group-addon" id="basic-addon1">
+										Enigme<br/>
+										Content
+									</span>
+									<textarea id="edit_enigme_content" class="form-control custom-control" rows="5" style="resize: vertical;"  placeholder="Write here your enigme..." required readonly></textarea> 
+								</div>
+								<br/>
+								<div class="input-group">
+									<span class="input-group-addon" id="basic-addon1">Solution</span>
+									<input id="edit_enigme_solution" type="text" class="form-control" placeholder="Change the solution of the enigme..." required readonly>
+								</div>
+								<br/>
+								
+								<button id="edit_enigme_save" type="button" class="btn btn-primary" style="width: 100%;">Save</button>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+						
+				<div id="end_of_content"></div>
+			</div>
+		</div>
+</form>
+
+<script>
+//style fixes...
+var header_shift = parseInt($("nav").css("height"));
+$("#page_content").css("margin-top", header_shift + 10 + 'px');
+$("#end_of_content").css("height", header_shift + 20 + 'px');
+$("#card_content").css("min-height", parseInt($(window).height()) - header_shift - parseInt($("#end_of_content").css("height")) - 30);
+
+
+function save_edition() {
+	var title = $("#edit_enigme_title").val();
+	var content = $("#edit_enigme_content").val();
+	var solution = $("#edit_enigme_solution").val();
+
+	if (!title || !content) {
+		toastr.error("Title and Content shouldn't be empty !! :'(");
+		return;
+	}
+
+	var current_enigme = $('#select_enigm_to_edit').val();
+	var db = firebase.database();
+	var ref = db.ref("enigmes_list/" + current_enigme);
+	//update the solution of not...
+	if (solution)
+		ref.set({
+			title: title,
+			text: content,
+			solution: solution
+		});
+	else
+		ref.set({
+			title: title,
+			text: content
+		});
+
+}
+
+function load_data() {
+	var enigme_to_edit = $('#select_enigm_to_edit').val();
+	firebase.database().ref("enigmes_list/" + enigme_to_edit).once("value", function(v) {
+		v = v.val();
+		$("#edit_enigme_title").val(v.title);
+		$("#edit_enigme_content").val(v.text);
+
+		$("#edit_enigme_title").attr("readonly", false);
+		$("#edit_enigme_content").attr("readonly", false);
+		$("#edit_enigme_solution").attr("readonly", false);
+	});
+}
+
+function initialize_edition(enigme_names) {
+	//add the options to the select listbox
+	$.each(enigme_names, function(i, item) {
+		$('#select_enigm_to_edit').append(new Option(item, item));
+	});
+	$('#select_enigm_to_edit').selectpicker('refresh');
+	$('#select_enigm_to_edit').selectpicker('deselectAll');
+	load_data();
+
+	//load the data when change...
+	$('#select_enigm_to_edit').change(function() {
+		$("#edit_enigme_title").attr("readonly", true);
+		$("#edit_enigme_content").attr("readonly", true);
+		$("#edit_enigme_solution").attr("readonly", true);
+
+		load_data();
+	});
+
+	//save the data when clicking save...
+	$("#edit_enigme_save").click(function(e) {
+		save_edition();
+	});
+
+	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent))
+		$('.selectpicker').selectpicker('mobile');
+	//hide the waiting imahe and load the edition interface...
+	$("#waiting_connection").css("display", "none");
+	$("#edition_container").css("display", "block");
+}
+
+//when loading the page go to the lastest enigm...
+$(document).ready(function() {
+	//wait firebase is initialized...
+	var interval_check_firebase_initialized = setInterval(function() {
+		if (firebase.apps.length) {
+			//stop to check if initialized
+			clearInterval(interval_check_firebase_initialized);
+			//get the enigms names and initialize the app
+			firebase.database().ref("enigmes_names/").once("value", function(v) {
+				var val = v.val();
+				if (!val || val == [])
+					val = ["init", "final"];
+
+				initialize_edition(val);
+			});
+		}
+	}, 100);
+});
+</script>
+
+</body>
+</html>
