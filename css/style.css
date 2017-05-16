@@ -7,6 +7,7 @@ nav {
 }
 
 .footer {
+	display: none;
 	position: fixed;
 	background-color: #969696;
 }
@@ -25,3 +26,6 @@ p {
 	margin-bottom: 2em;
 }
 
+.nav_list:hover {
+	background-color: #e7e7e7;
+}
