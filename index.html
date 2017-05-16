@@ -70,13 +70,11 @@
 						<center>
 							<h1 id="enigme_title">
 								<!-- whaiting to be initialized -->
-								<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+								<center><i class="fa fa-spinner fa-spin" style="font-size:24px"></i></center>
 							</h1>
 						</center>
 
 						<p id="enigme_content">
-							<!-- whaiting to be initialized -->
-							<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
 						</p>
 					</div>
 				</div>
@@ -101,6 +99,9 @@
 <script type="text/javascript" src="./js/controller.js"></script>
 <script>
 	function initialize_anigme() {
+		if (!localStorage.getItem("latest_enign_name")) //first visit of the user...
+			bootbox.alert("Good Luck !! ;)");
+
 		//load the latest enigm...
 		$("footer").css("display", "block");
 		set_current_enigm_name(get_latest_rechead_enigm());
