@@ -83,8 +83,11 @@ function load_data() {
 }
 
 function initialize_edition(enigme_names) {
+	//check if the url contains the 'egnime_id' param to set the select value on it...
+	var egnime_id = get_query_params().egnime_id;
+
 	//add the options to the select listbox
-	reload_select(enigme_names);
+	reload_select(enigme_names, egnime_id);
 
 	//load the data when change...
 	$('#select_enigm_to_edit').change(function() {
@@ -125,14 +128,16 @@ function remove_riddle(){
 	;}
 
 
-function reload_select(list_name){
+function reload_select(list_name, val){
 	$('#select_enigm_to_edit').empty();
 	$.each(list_name, function(i, item) {
 		$('#select_enigm_to_edit').append(new Option(item, item));
 	});
 	$('#select_enigm_to_edit').append(new Option("new_enigme", "new_enigme"));
+	$('#select_enigm_to_edit').val(val);
 	$('#select_enigm_to_edit').selectpicker('refresh');
 	$('#select_enigm_to_edit').selectpicker('deselectAll');
 	load_data()
 
 }
+
