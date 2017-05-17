@@ -1,10 +1,10 @@
 // Initialize Firebase
 var config = {
-  apiKey: "AIzaSyCJW1j7d8egpRYGuUh1CvQWziyqTeLXfVs",
-  authDomain: "anigme-e734b.firebaseapp.com",
-  databaseURL: "https://anigme-e734b.firebaseio.com",
-  projectId: "anigme-e734b",
-  storageBucket: "anigme-e734b.appspot.com",
-  messagingSenderId: "80739643747"
-};
+    apiKey: "AIzaSyAfmxTlfiWV0Xd_npFy6rtpYMIcar2T5mQ",
+    authDomain: "testproject-5cf53.firebaseapp.com",
+    databaseURL: "https://testproject-5cf53.firebaseio.com",
+    projectId: "testproject-5cf53",
+    storageBucket: "testproject-5cf53.appspot.com",
+    messagingSenderId: "198477420063"
+  };	
 firebase.initializeApp(config);
