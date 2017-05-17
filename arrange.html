@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head runat="server">
+	<title>@nigme</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <!-- firebase : those scripts MUST be imported before all the other... -->
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-database.js"></script>
+    <!-- load the firebase api keys / config... -->
+    <script>
+    	function add_script(src) {
+            var s = document.createElement('script');
+            s.setAttribute('src', src);
+            document.head.appendChild(s);
+        }
+
+        add_script("./js/firebase_api_config.js");
+    </script>
+    <!-- jQuery -->
+    <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
+    <script src='https://code.jquery.com/ui/1.12.0/jquery-ui.min.js'></script>
+    <!-- bootstrap -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css" media="screen" />
+    <!-- bootbox.js at 4.4.0 -->
+	<script src="https://rawgit.com/makeusabrew/bootbox/f3a04a57877cab071738de558581fbc91812dce9/bootbox.js"></script>
+    <!-- toastr : for notifications managing... -->
+    <link href="./css/toastr.min.css" rel="stylesheet"/>
+    <script src="./js/toastr.min.js"></script>
+    <!-- @nigme stuffs -->
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+	<form id="form1" runat="server">
+		<div id="divContainer" class="container">
+			<!-- navigation -->
+			<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+				<div id="divContainer" class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarContent">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand navbar-left" href="#">
+							@nigmes
+						</a>
+					</div>
+
+					<div id="navbarContent" class="collapse navbar-collapse">
+						<ul class="nav navbar-nav navbar-right">
+							<li class="nav_list"><a href="anigme.html">Go to play...</a></li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+
+			<!-- content -->
+			<div id="page_content">
+				<div class="panel panel-default">
+					<div id="card_content" class="panel-body">
+						<center>
+							<h1 id="enigme_title">
+								Arrange
+							</h1>
+						</center>
+
+						<p id="enigme_list_names">
+
+							<!-- whaiting to be initialized -->
+							<center id="waiting_spinner"><i class="fa fa-spinner fa-spin" style="font-size:24px"></i></center>
+
+							<!-- init enigm is unsortable -->
+							<ul class="enigm_name_lst list-unstyled">
+								<li id="init_panel_unsortable" class="panel panel-info">
+									<div class="panel-heading">Init</div>
+								</li>
+							</ul>
+
+							<!-- all the middle enigmes are sortable -->
+							<ul id="draggablePanelList" class="enigm_name_lst list-unstyled">
+							</ul>
+
+							<!-- final enigm is unsortable -->
+							<ul class="list-unstyled">
+								<li id="final_panel_unsortable" class="enigm_name_lst panel panel-info">
+									<div class="panel-heading">Final</div>
+								</li>
+							</ul>
+
+						</p>
+
+						<center>
+							<button id="arrange_save" type="button" class="btn btn-danger" style="width: 75%;">Save</button>
+						</centere>
+					</div>
+				</div>
+						
+				<div id="end_of_content"></div>
+			</div>
+		</div>
+
+</form>
+
+<script type="text/javascript" src="./js/common_page_settings.js"></script>
+<script type="text/javascript" src="./js/arrange.js"></script>
+
+</body>
+</html>
