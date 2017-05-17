@@ -42,7 +42,7 @@ function save_edition() {
 			initialize_edition(val);
 		});
 	}else{
-
+		var path = "enigmes_list/" + current_enigme + "/";
 		//update fields
 		db.ref(path + "title").set(title);
 		db.ref(path + "text").set(content);
