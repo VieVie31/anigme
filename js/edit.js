@@ -20,6 +20,7 @@ function save_edition() {
 	var title = $("#edit_enigme_title").val();
 	var content = $("#edit_enigme_content").val();
 	var solution = $("#edit_enigme_solution").val();
+	var path = "enigmes_list/";
 
 	if (!title || !content) {
 		toastr.error("Title and Content shouldn't be empty !! :'(");
@@ -29,17 +30,21 @@ function save_edition() {
 	var current_enigme = $('#select_enigm_to_edit').val();
 	var pathName = "enigmes_names/";
 	if(current_enigme == "new_enigme"){
+		if(!solution){
+			toastr.error("We need answers !! ");
+			return;
+		}
 		current_enigme = title;
+		
 		db.ref("enigmes_list/" + current_enigme + "/").set({
 			solution: solution.trim().toLowerCase().hashCode(),
 			text: content,
 			title : title
 		});
-		//For now lets push, see later
-		db.ref(pathName).push(current_enigme);
 		db.ref(pathName).once("value", function(v) {
 			var val = v.val();
-			initialize_edition(val);
+			db.ref(pathName+(v.numChildren())+"/").set(current_enigme);
+			reload_select(val);
 		});
 	}else{
 
@@ -79,14 +84,7 @@ function load_data() {
 
 function initialize_edition(enigme_names) {
 	//add the options to the select listbox
-	$('#select_enigm_to_edit').empty();
-	$.each(enigme_names, function(i, item) {
-		$('#select_enigm_to_edit').append(new Option(item, item));
-	});
-	$('#select_enigm_to_edit').append(new Option("new_enigme", "new_enigme"));
-	$('#select_enigm_to_edit').selectpicker('refresh');
-	$('#select_enigm_to_edit').selectpicker('deselectAll');
-	load_data();
+	reload_select(enigme_names);
 
 	//load the data when change...
 	$('#select_enigm_to_edit').change(function() {
@@ -101,10 +99,40 @@ function initialize_edition(enigme_names) {
 	$("#edit_enigme_save").click(function(e) {
 		save_edition();
 	});
+	$("#remove_enigme").click(function(e) {
+		remove_riddle();
+	});
 
 	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent))
 		$('.selectpicker').selectpicker('mobile');
 	//hide the waiting imahe and load the edition interface...
 	$("#waiting_connection").css("display", "none");
 	$("#edition_container").css("display", "block");
+}
+
+function remove_riddle(){
+	var current_enigme = $('#select_enigm_to_edit').val();
+	if(current_enigme == "init" || current_enigme == "final" || current_enigme == "new_enigme"){
+				toastr.error("You can't delete this bro'");
+				return;
+	}
+	var db = firebase.database();
+	db.ref("enigmes_list/"+current_enigme).remove();
+	db.ref("enigmes_names/").once("value", function(v) {
+			var val = v.val();
+			db.ref("enigmes_names/"+val.indexOf(current_enigme)).remove();
+	})
+	;}
+
+
+function reload_select(list_name){
+	$('#select_enigm_to_edit').empty();
+	$.each(list_name, function(i, item) {
+		$('#select_enigm_to_edit').append(new Option(item, item));
+	});
+	$('#select_enigm_to_edit').append(new Option("new_enigme", "new_enigme"));
+	$('#select_enigm_to_edit').selectpicker('refresh');
+	$('#select_enigm_to_edit').selectpicker('deselectAll');
+	load_data()
+
 }
