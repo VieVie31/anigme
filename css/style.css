@@ -29,3 +29,18 @@ p {
 .nav_list:hover {
 	background-color: #e7e7e7;
 }
+
+#draggablePanelList .panel-heading {
+	cursor: move;
+}
+
+.edit_me {
+	float: right;
+}
+
+
+#arrange_save, .enigm_name_lst {
+	display: none;
+}
+
+
