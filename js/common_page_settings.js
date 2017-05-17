@@ -22,3 +22,29 @@ toastr.options = {
 	"showMethod": "fadeIn",
 	"hideMethod": "fadeOut"
 }
+
+function get_query_params() {
+	var params = {};
+	var tokens;
+	var re = /[?&]?([^=]+)=([^&]*)/g;
+
+	var qs = document.location.search;
+	qs = qs.split('+').join(' ');
+
+	while (tokens = re.exec(qs))
+		params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+
+	return params;
+}
+
+String.prototype.hashCode = function() {
+	var hash = 0, i, chr;
+
+	if (this.length === 0) return hash;
+		for (i = 0; i < this.length; i++) {
+			chr   = this.charCodeAt(i);
+			hash  = ((hash << 5) - hash) + chr;
+			hash |= 0; // Convert to 32bit integer
+		}
+	return hash;
+};

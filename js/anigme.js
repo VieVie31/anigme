@@ -11,20 +11,6 @@ $(document).ready(function() {
 	}, 100);
 });
 
-function get_query_params() {
-    var params = {};
-    var tokens;
-    var re = /[?&]?([^=]+)=([^&]*)/g;
-
-    var qs = document.location.search;
-    qs = qs.split('+').join(' ');
-
-    while (tokens = re.exec(qs))
-    	params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
-
-    return params;
-}
-
 function initialize_anigme() {
 	if (!localStorage.getItem("latest_enign_name")) //first visit of the user...
 		bootbox.alert("Good Luck !! ;)");
@@ -33,7 +19,7 @@ function initialize_anigme() {
 	var enigme_to_display = get_query_params().enigm
 	if (!enigme_to_display)
 		enigme_to_display = get_latest_rechead_enigm();
-	
+
 	$("footer").css("display", "block");
 	set_current_enigm_name(enigme_to_display);
 	load_enigm_data();
