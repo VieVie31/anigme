@@ -11,13 +11,31 @@ $(document).ready(function() {
 	}, 100);
 });
 
+function get_query_params() {
+    var params = {};
+    var tokens;
+    var re = /[?&]?([^=]+)=([^&]*)/g;
+
+    var qs = document.location.search;
+    qs = qs.split('+').join(' ');
+
+    while (tokens = re.exec(qs))
+    	params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+
+    return params;
+}
+
 function initialize_anigme() {
 	if (!localStorage.getItem("latest_enign_name")) //first visit of the user...
 		bootbox.alert("Good Luck !! ;)");
 
-	//load the latest enigm...
+	//load the latest enigm, or the enigm choosen by the url...
+	var enigme_to_display = get_query_params().enigm
+	if (!enigme_to_display)
+		enigme_to_display = get_latest_rechead_enigm();
+	
 	$("footer").css("display", "block");
-	set_current_enigm_name(get_latest_rechead_enigm());
+	set_current_enigm_name(enigme_to_display);
 	load_enigm_data();
 
 	//let the user checking his solution...
@@ -85,8 +103,12 @@ function load_enigm_data() {
 	var db = firebase.database();
 	var ref = db.ref("enigmes_list/" + get_current_enign_name() + '/');
 	ref.once("value", function(v) {
-		$("#enigme_title").text(v.val().title);
-		$("#enigme_content").text(v.val().text);
+		try {
+			$("#enigme_title").text(v.val().title);
+			$("#enigme_content").text(v.val().text);
+		} catch (e) {
+			toastr.error("Enigm not available... :'(");
+		}
 	});
 }
 
