@@ -20,14 +20,14 @@ function save_edition() {
 	var title = $("#edit_enigme_title").val();
 	var content = $("#edit_enigme_content").val();
 	var solution = $("#edit_enigme_solution").val();
-	var path = "enigmes_list/";
+	var current_enigme = $('#select_enigm_to_edit').val();
+	var path = "enigmes_list/"+current_enigme+"/";
 
 	if (!title || !content) {
 		toastr.error("Title and Content shouldn't be empty !! :'(");
 		return;
 	}
 	var db = firebase.database();
-	var current_enigme = $('#select_enigm_to_edit').val();
 	var pathName = "enigmes_names/";
 	if(current_enigme == "new_enigme"){
 		if(!solution){
