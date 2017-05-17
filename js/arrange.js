@@ -51,9 +51,9 @@ function initialize_arrange(enigm_name_list) {
 	});
 
 	//make the enigms editable
-	$(".panel-heading").append("<span class='edit_me'> - Click to Edit</span>");
+	$(".panel-heading").append("<span class='edit_me'>- Click to Edit</span>");
 	$(".edit_me").click(function(e) {
-		alert($(this).parent().html());
+		window.location.href = "edit.html?egnime_id=" + encodeURIComponent($(this).parent().children()[0].innerText);
 	});
 	
 	//make the list visible and the save button too
