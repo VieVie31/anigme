@@ -10,7 +10,6 @@ $(document).ready(function() {
 				var val = v.val();
 				if (!val || val == [])
 					val = ["init", "final"];
-
 				initialize_edition(val);
 			});
 		}
@@ -26,40 +25,65 @@ function save_edition() {
 		toastr.error("Title and Content shouldn't be empty !! :'(");
 		return;
 	}
-
-	var current_enigme = $('#select_enigm_to_edit').val();
 	var db = firebase.database();
-	var path = "enigmes_list/" + current_enigme + "/";
-	//update fields
-	db.ref(path + "title").set(title);
-	db.ref(path + "text").set(content);
-	//update the solution of not...
-	if (solution)
-		db.ref(path + "solution").set(solution.trim().toLowerCase().hashCode());
+	var current_enigme = $('#select_enigm_to_edit').val();
+	var pathName = "enigmes_names/";
+	if(current_enigme == "new_enigme"){
+		current_enigme = title;
+		db.ref("enigmes_list/" + current_enigme + "/").set({
+			solution: solution.trim().toLowerCase().hashCode(),
+			text: content,
+			title : title
+		});
+		//For now lets push, see later
+		db.ref(pathName).push(current_enigme);
+		db.ref(pathName).once("value", function(v) {
+			var val = v.val();
+			initialize_edition(val);
+		});
+	}else{
+
+		//update fields
+		db.ref(path + "title").set(title);
+		db.ref(path + "text").set(content);
+		//update the solution of not...
+		if (solution)
+			db.ref(path + "solution").set(solution.trim().toLowerCase().hashCode());
+	}
 
 
 }
 
 function load_data() {
 	var enigme_to_edit = $('#select_enigm_to_edit').val();
-	firebase.database().ref("enigmes_list/" + enigme_to_edit).once("value", function(v) {
-		v = v.val();
-		$("#edit_enigme_title").val(v.title);
-		$("#edit_enigme_content").val(v.text);
-		$("#edit_enigme_solution").val(''); //delete the previously written solution
+	if(enigme_to_edit != "new_enigme"){
+		firebase.database().ref("enigmes_list/" + enigme_to_edit).once("value", function(v) {
+			v = v.val();
+			$("#edit_enigme_title").val(v.title);
+			$("#edit_enigme_content").val(v.text);
+			$("#edit_enigme_solution").val(''); //delete the previously written solution
 
-		$("#edit_enigme_title").attr("readonly", false);
-		$("#edit_enigme_content").attr("readonly", false);
-		//the final card should be a conggrat card so no enigm !!
-		$("#edit_enigme_solution").attr("readonly", $('#select_enigm_to_edit').val() == "final");
-	});
+		});
+	}
+	else{
+		$("#edit_enigme_title").val('');
+		$("#edit_enigme_content").val('');
+		$("#edit_enigme_solution").val(''); 
+	}
+	$("#edit_enigme_title").attr("readonly", false);
+	$("#edit_enigme_content").attr("readonly", false);
+	//the final card should be a conggrat card so no enigm !!
+	$("#edit_enigme_solution").attr("readonly", $('#select_enigm_to_edit').val() == "final");
+
 }
 
 function initialize_edition(enigme_names) {
 	//add the options to the select listbox
+	$('#select_enigm_to_edit').empty();
 	$.each(enigme_names, function(i, item) {
 		$('#select_enigm_to_edit').append(new Option(item, item));
 	});
+	$('#select_enigm_to_edit').append(new Option("new_enigme", "new_enigme"));
 	$('#select_enigm_to_edit').selectpicker('refresh');
 	$('#select_enigm_to_edit').selectpicker('deselectAll');
 	load_data();
