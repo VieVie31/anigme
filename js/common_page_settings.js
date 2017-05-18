@@ -23,6 +23,14 @@ toastr.options = {
 	"hideMethod": "fadeOut"
 }
 
+function fix_loading() {
+	//fix the loading text a the bootom of the page...
+	$("h1").each(function() {
+		if ($(this).html() == "loading")
+			$(this).html('');
+	});
+}
+
 function get_query_params() {
 	var params = {};
 	var tokens;
