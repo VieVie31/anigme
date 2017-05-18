@@ -35,6 +35,9 @@ function add_li(txt) {
 }
 
 function initialize_arrange(enigm_name_list) {
+	//remove the loading text...
+	fix_loading();
+
 	//add the enigms id to the list...
 	for (var i = 0; i < enigm_name_list.length; i++)
 		add_li(enigm_name_list[i]);
@@ -48,6 +51,15 @@ function initialize_arrange(enigm_name_list) {
 				var newIndex = $listItem.index();
 			});
 		}
+	});
+
+	//jquery mobile make sortable
+	$(document).bind('pageinit', function() {
+		$( "#draggablePanelList" ).sortable();
+		$( "#draggablePanelList" ).disableSelection();
+		$( "#draggablePanelList" ).bind( "sortstop", function(event, ui) {
+			$('#draggablePanelList').listview('refresh');
+		});
 	});
 
 	//make the enigms editable
