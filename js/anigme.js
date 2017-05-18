@@ -16,7 +16,7 @@ function initialize_anigme() {
 		bootbox.alert("Good Luck !! ;)");
 
 	//load the latest enigm, or the enigm choosen by the url...
-	var enigme_to_display = get_query_params().enigm
+	var enigme_to_display = get_query_params().enigm;
 	if (!enigme_to_display)
 		enigme_to_display = get_latest_rechead_enigm();
 
@@ -52,6 +52,14 @@ function initialize_anigme() {
 			}
 		);
 	});
+
+	//check if the solution is given in param...
+	var solution = get_query_params().solution;
+	if (solution) {
+		$("#enigme_solution").val(solution);
+		//check the solution
+		check_enigme_solution();	
+	}
 }
 
 function reset_progression() {
