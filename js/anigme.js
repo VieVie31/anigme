@@ -90,6 +90,32 @@ function get_current_enign_name() {
 	return current_enign_name;
 }
 
+function display_images(txt) {
+	var matches = txt.split(/[\s]+/).map(function(str) {
+		return str.match(/(https?:\/\/.*\.(?:png|jpg))/)
+	});
+
+	var images_lst = [];
+	for (var i = 0; i < matches.length; i++)
+		if (matches[i])
+			images_lst.push(matches[i][0]);
+	images_lst = images_lst.unique();
+	
+	function rec_replace(splitted_tab, to_replace_tab) {
+		if (to_replace_tab.length == 0)
+			return splitted_tab;
+
+		var tr = to_replace_tab[0];
+		to_replace_tab = to_replace_tab.slice(1);
+
+		splitted_tab = splitted_tab.split(tr).join("<img src='" + tr + "' class='img-thumbnail img-responsive'></img>");
+
+		return rec_replace(splitted_tab, to_replace_tab);
+	}
+
+	return rec_replace(txt, images_lst);
+}
+
 function load_enigm_data() {
 	//it's the felicitation message... do not display the submit form...
 	$("footer").css("display", (get_current_enign_name() === "final" ? "none" : "block"));
@@ -98,8 +124,8 @@ function load_enigm_data() {
 	var ref = db.ref("enigmes_list/" + get_current_enign_name() + '/');
 	ref.once("value", function(v) {
 		try {
-			$("#enigme_title").text(v.val().title);
-			$("#enigme_content").text(v.val().text);
+			$("#enigme_title").html(sanitize(v.val().title));
+			$("#enigme_content").html(display_images(sanitize(v.val().text)));
 		} catch (e) {
 			toastr.error("Enigm not available... :'(");
 		}

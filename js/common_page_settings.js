@@ -45,6 +45,11 @@ function get_query_params() {
 	return params;
 }
 
+//fix for xss problems...
+function sanitize(str) {
+	return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
 String.prototype.hashCode = function() {
 	var hash = 0, i, chr;
 
@@ -56,3 +61,9 @@ String.prototype.hashCode = function() {
 		}
 	return hash;
 };
+
+Array.prototype.unique = function(a) {
+	return function() {
+		return this.filter(a)
+	}
+} (function(a, b, c){ return c.indexOf(a, b + 1) < 0 });
