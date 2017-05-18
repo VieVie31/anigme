@@ -10,11 +10,27 @@ $(document).ready(function() {
 				var val = v.val();
 				if (!val || val == [])
 					val = ["init", "final"];
+
+				//remove undefined values
+				val = remove_undefined_values(val);
+
 				initialize_edition(val);
 			});
 		}
 	}, 100);
 });
+
+function remove_undefined_values(tab) {
+	//remove the undefined values
+	var out = [];
+	var  k = Object.keys(tab);
+
+	for (var  i = 0; i < k.length; i++)
+		if (tab[k[i]])
+			out.push(tab[k[i]]);
+
+	return out;
+}
 
 function save_edition() {
 	var title = $("#edit_enigme_title").val();
