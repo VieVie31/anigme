@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head runat="server">
+	<title>@nigme</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <!-- firebase : those scripts MUST be imported before all the other... -->
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.9.0/firebase-database.js"></script>
+    <!-- load the firebase api keys / config... -->
+    <script>
+    	function add_script(src) {
+            var s = document.createElement('script');
+            s.setAttribute('src', src);
+            document.head.appendChild(s);
+        }
+
+        add_script("./js/firebase_api_config.js");
+    </script>
+    <!-- jQuery -->
+    <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
+    <script src='https://code.jquery.com/ui/1.12.0/jquery-ui.min.js'></script>
+    <!-- bootstrap -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css" media="screen" />
+    <!-- bootbox.js at 4.4.0 -->
+	<script src="https://rawgit.com/makeusabrew/bootbox/f3a04a57877cab071738de558581fbc91812dce9/bootbox.js"></script>
+    <!-- bootstrap-select -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+    <!-- toastr : for notifications managing... -->
+    <link href="./css/toastr.min.css" rel="stylesheet"/>
+    <script src="./js/toastr.min.js"></script>
+    <!-- @nigme stuffs -->
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+	<form id="form1" runat="server">
+		<div id="divContainer" class="container">
+			<!-- navigation -->
+			<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+				<div id="divContainer" class="container">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarContent">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+						<a class="navbar-brand navbar-left" href="#">
+							@nigmes
+						</a>
+					</div>
+			</nav>
+
+			<!-- content -->
+			<div id="page_content">
+				<div class="panel panel-default">
+					<div id="card_content" class="panel-body">
+					    <div class="row">
+					    	<div class="col-md-6">
+								<!--Sing in modal-->
+								<div class="modal-header">
+								    <h1 class="text-center">Sing In</h1>
+								</div>
+								<div class="modal-body">
+								    <form class="form col-md-12 center-block">
+								    	<div class="form-group">
+								            <input type="text" class="form-control input-lg" placeholder="Email">
+								        </div>
+								        <div class="form-group">
+								          	<input type="password" class="form-control input-lg" placeholder="Password">
+								        </div>
+								        <button class="btn btn-primary btn-lg btn-block">Sign In</button>
+								    </form>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<!--Sing up modal-->
+								<div class="modal-header">
+								    <h1 class="text-center">Create Account</h1>
+								</div>
+								<div class="modal-body">
+								    <form class="form col-md-12 center-block">
+								    	<div class="form-group">
+								            <input type="text" class="form-control input-lg" placeholder="Email">
+								        </div>
+								        <div class="form-group">
+								          	<input type="password" class="form-control input-lg" placeholder="Password">
+								        </div>
+								        <div class="form-group">
+								          	<input type="password" class="form-control input-lg" placeholder="Repeat password">
+								        </div>
+								        <button class="btn btn-primary btn-lg btn-block">Sign Up</button>
+								    </form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+						
+				<div id="end_of_content"></div>
+			</div>
+		</div>
+</form>
+
+<script type="text/javascript" src="./js/common_page_settings.js"></script>
+<script type="text/javascript" src="./js/login.js"></script>
+
+</body>
+</html>
