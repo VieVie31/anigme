@@ -96,8 +96,10 @@ function set_successors() {
 	var lst = get_ordered_list_name();
 	var database = firebase.database();
 
-	if (lst.length) {
-		lst = ["init"].concat(lst).concat("final");
+	lst = ["init"].concat(lst).concat("final");
+
+	//reactualise the linked list
+	if (lst.length > 2) {
 		//set the links...
 		for (var i = 0; i < lst.length - 1; i++) {
 			var ref = database.ref("enigmes_list/" + lst[i] + "/next");
@@ -108,6 +110,10 @@ function set_successors() {
 		var ref = database.ref("enigmes_list/init/next");
 		ref.set("final");
 	}
+
+	//reactualize the order in enigme_names
+	var ref = database.ref("enigmes_names/");
+	ref.set(lst);
 }
 
 
