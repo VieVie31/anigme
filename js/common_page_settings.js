@@ -46,6 +46,12 @@ function get_uid() {
 	return firebase.auth().currentUser.uid;
 }
 
+function sign_out() {
+	firebase.auth().signOut();
+	toastr.success("You just signed out !!</br>See you soon...");
+	window.location.href = "./login.html";
+}
+
 function get_query_params() {
 	var params = {};
 	var tokens;

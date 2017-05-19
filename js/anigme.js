@@ -17,7 +17,7 @@ function initialize_anigme() {
 	enigme_set_id = get_query_params().enigme_set_id;
 	if (!enigme_set_id) {
 		$("#enigme_title").html("ERROR :'(");
-		$("#enigme_content").html("The 'enigme_set_id' param is missing in the url...</br>Ask again the good url to the person who gave you this link...");
+		$("#enigme_content").html("The 'enigme_set_id' param is missing in the url...</br>Ask again the good url to the person who gave you this link...</br>Or better make your enigme set by creating an account just <a href='login.html'>HERE</a> !!! :D");
 
 		toastr.error("Url should contain the enigm set param...");
 		return;

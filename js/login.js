@@ -26,12 +26,16 @@ $(document).ready(function() {
 });
 
 function initialize_co() {
+	//check if user asked to signout
+	if (get_query_params().signout)
+		sign_out();
+
 	//check if allready authentified...
 	if (firebase.auth().currentUser)
 		window.location.href = "./arrange.html"; //redirect to arrrange...
 
 	//initialize the button click action
-	$("#sign_in").click(user_sign_in);
+	$("#sign_in").click(function(e) { console.log("sign in"); user_sign_in();});
 	$("#sign_up").click(user_create_account);
 }
 
