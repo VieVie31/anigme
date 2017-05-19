@@ -71,6 +71,12 @@ function initialize_anigme() {
 		//check the solution
 		check_enigme_solution();	
 	}
+
+	$(".fa-share").css("display", "block");
+}
+
+function get_this_egnime_url() {
+	return window.location.href.split('?')[0] + '?enigme_set_id=' + get_query_params().enigme_set_id + '&enigm=' + encodeURI(get_current_enign_name());
 }
 
 function reset_progression() {
