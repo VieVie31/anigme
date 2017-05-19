@@ -11,8 +11,19 @@ $(document).ready(function() {
 	}, 100);
 });
 
+var enigme_set_id = null;
 function initialize_anigme() {
-	if (!localStorage.getItem("latest_enign_name")) //first visit of the user...
+	//check the id of the enigm is well given in param...
+	enigme_set_id = get_query_params().enigme_set_id;
+	if (!enigme_set_id) {
+		$("#enigme_title").html("ERROR :'(");
+		$("#enigme_content").html("The 'enigme_set_id' param is missing in the url...</br>Ask again the good url to the person who gave you this link...");
+
+		toastr.error("Url should contain the enigm set param...");
+		return;
+	}
+
+	if (!localStorage.getItem(enigme_set_id + '_' + "latest_enign_name")) //first visit of the user...
 		bootbox.alert("Good Luck !! ;)");
 
 	//load the latest enigm, or the enigm choosen by the url...
@@ -46,7 +57,7 @@ function initialize_anigme() {
 					toastr.info("Reseting your progression...");
 					//reset the progression...
 					set_current_enigm_name("init");
-					localStorage.setItem("latest_enign_name", "init");
+					localStorage.setItem(enigme_set_id + '_' + "latest_enign_name", "init");
 					load_enigm_data();
 				}
 			}
@@ -63,28 +74,28 @@ function initialize_anigme() {
 }
 
 function reset_progression() {
-	localStorage.setItem("latest_enign_name", "init");
+	localStorage.setItem(enigme_set_id + '_' + "latest_enign_name", "init");
 }
 
 function get_latest_rechead_enigm() {
-	var latest_enign_name = localStorage.getItem("latest_enign_name");
+	var latest_enign_name = localStorage.getItem(enigme_set_id + '_' + "latest_enign_name");
 	if (latest_enign_name == null || latest_enign_name == '') { //never played before...
 		latest_enign_name = "init"; //the initial enigm must allways be named : 'init'
-		localStorage.setItem("latest_enign_name", latest_enign_name);
+		localStorage.setItem(enigme_set_id + '_' + "latest_enign_name", latest_enign_name);
 	}
 
 	return latest_enign_name;
 }
 
 function set_current_enigm_name(enigm_name) {
-	localStorage.setItem("current_enign_name", enigm_name);
+	localStorage.setItem(enigme_set_id + '_' + "current_enign_name", enigm_name);
 }
 
 function get_current_enign_name() {
-	var current_enign_name = localStorage.getItem("current_enign_name");
+	var current_enign_name = localStorage.getItem(enigme_set_id + '_' + "current_enign_name");
 	if (current_enign_name == null || current_enign_name == '') { //never played before...
 		current_enign_name = "init"; //the initial enigm must allways be named : 'init'
-		localStorage.setItem("current_enign_name", latest_enign_name);
+		localStorage.setItem(enigme_set_id + '_' + "current_enign_name", latest_enign_name);
 	}
 
 	return current_enign_name;
@@ -121,7 +132,7 @@ function load_enigm_data() {
 	$("footer").css("display", (get_current_enign_name() === "final" ? "none" : "block"));
 
 	var db = firebase.database();
-	var ref = db.ref("enigmes_list/" + get_current_enign_name() + '/');
+	var ref = db.ref(enigme_set_id + '/' + "enigmes_list/" + get_current_enign_name() + '/');
 	ref.once("value", function(v) {
 		try {
 			$("#enigme_title").html(sanitize(v.val().title));
@@ -134,16 +145,16 @@ function load_enigm_data() {
 
 function check_enigme_solution (e) {
 	var db = firebase.database();
-	var ref = db.ref("enigmes_list/" + get_current_enign_name() + '/');
+	var ref = db.ref(enigme_set_id + '/' + "enigmes_list/" + get_current_enign_name() + '/');
 	ref.once("value", function(v) {
 		if ($("#enigme_solution").val().trim().toLowerCase().hashCode() == v.val().solution) { //not case sensitive...
 			//TODO: go to the next enigm
 			toastr.success("Good answer !! :D");
 
 			//set the lastet enigme rechead
-			localStorage.setItem("latest_enign_name", v.val().next);
+			localStorage.setItem(enigme_set_id + '_' + "latest_enign_name", v.val().next);
 			//set the current enigme to the next
-			localStorage.setItem("current_enign_name", v.val().next);
+			localStorage.setItem(enigme_set_id + '_' + "current_enign_name", v.val().next);
 			//reload the enigms data...
 			load_enigm_data();
 		} else {

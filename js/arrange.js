@@ -83,6 +83,9 @@ function initialize_arrange(enigm_name_list) {
 
 	//remove the waiting spinner
 	$("#waiting_spinner").children().removeClass("fa fa-spinner fa-spin");
+
+	//display the sharing url...
+	$("#share_url").text(window.location.href.split("arrange.html") + '?enigme_set_id=' + firebase.auth().currentUser.uid);
 }
 
 function get_ordered_list_name() {

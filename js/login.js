@@ -10,9 +10,26 @@ $(function() {
    		}
       
     })
-  })
+});
 
-var current_user = null;
+//when loading the page go to the lastest enigm...
+$(document).ready(function() {
+	//wait firebase is initialized...
+	var interval_check_firebase_initialized = setInterval(function() {
+		if (firebase.apps.length) {
+			//stop to check if initialized
+			clearInterval(interval_check_firebase_initialized);
+			//initialize the app
+			initialize_co();
+		}
+	}, 100);
+});
+
+function initialize_co() {
+	//initialize the button click action
+	$("#sign_in").click(user_sign_in);
+	$("#sign_up").click(user_create_account);
+}
 
 function user_sign_in() {
 	var email = $("#mail_input_sing_in").val();
@@ -21,7 +38,12 @@ function user_sign_in() {
 	firebase.auth().signInWithEmailAndPassword(email, password).then(function(user) {
 	    current_user = firebase.auth().currentUser;
 	    toastr.info("You are now logged !!");
-	    //action_when_sign_in();
+	    
+	    //redirect
+	    setTimeout(function() {
+	    	window.location.href = './arrange.html';
+	    }, 3000);
+	    
 	}, function(error) {
 		var errorCode = error.code;
 		var errorMessage = error.message;
@@ -39,14 +61,34 @@ function user_create_account() {
 	}
 
 	firebase.auth().createUserWithEmailAndPassword(email, password).then(function(user) {
-	    current_user = firebase.auth().currentUser;
-
-	    //create a version number...
+		//intialize the enigm names
 		var database = firebase.database();
-		var t = database.ref('users/' + current_user.uid);
-		t.set({version: 0});
-	    
-	    toastr.info("Your account is now live... Have fun !!");
+		var ref = database.ref(get_uid() + "/enigmes_names/");
+		ref.set(["init", "final"]);
+
+		//initalize the linkage and content...
+		var ref_init = database.ref(get_uid() + "/enigmes_list/init");
+		ref_init.set({
+			title: "Title",
+			text: "Your enigm here...",
+			solution: 0, //solution is ''
+			next: "final"
+		});
+
+		var ref_final = database.ref(get_uid() + "/enigmes_list/final");
+		ref_final.set({
+			title: "Bravo",
+			text: "Your congradulation message here..."
+		});
+
+		//TODO: check all is well initialized...
+
+	    toastr.success("Your account is now live... \nEdit your enigmes and share them accross the world !!");
+
+	    //redirect
+	    setTimeout(function() {
+	    	window.location.href = './arrange.html';
+	    }, 3000);
 
 	}, function(error) {
 		var errorCode = error.code;
@@ -54,3 +96,4 @@ function user_create_account() {
 		toastr.error(errorMessage, "Account Creation Error");
 	});
 }
+
