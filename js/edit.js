@@ -6,7 +6,7 @@ $(document).ready(function() {
 			//stop to check if initialized
 			clearInterval(interval_check_firebase_initialized);
 			//get the enigms names and initialize the app
-			firebase.database().ref("enigmes_names/").once("value", function(v) {
+			firebase.database().ref(get_uid() + '/' + "enigmes_names/").once("value", function(v) {
 				var val = v.val();
 				if (!val || val == [])
 					val = ["init", "final"];
@@ -52,24 +52,24 @@ function save_edition() {
 		}
 		current_enigme = title;
 		
-		db.ref("enigmes_list/" + current_enigme + "/").set({
+		db.ref(get_uid() + '/' + "enigmes_list/" + current_enigme + "/").set({
 			solution: solution.trim().toLowerCase().hashCode(),
 			text: content,
 			title : title
 		});
-		db.ref(pathName).once("value", function(v) {
+		db.ref(get_uid() + '/' + pathName).once("value", function(v) {
 			var val = v.val();
-			db.ref(pathName+(v.numChildren())+"/").set(current_enigme);
+			db.ref(get_uid() + '/' + pathName+(v.numChildren())+"/").set(current_enigme);
 			reload_select(val);
 		});
 	}else{
 		var path = "enigmes_list/" + current_enigme + "/";
 		//update fields
-		db.ref(path + "title").set(title);
-		db.ref(path + "text").set(content);
+		db.ref(get_uid() + '/' + path + "title").set(title);
+		db.ref(get_uid() + '/' + path + "text").set(content);
 		//update the solution of not...
 		if (solution)
-			db.ref(path + "solution").set(solution.trim().toLowerCase().hashCode());
+			db.ref(get_uid() + '/' + path + "solution").set(solution.trim().toLowerCase().hashCode());
 	}
 
 
@@ -78,7 +78,7 @@ function save_edition() {
 function load_data() {
 	var enigme_to_edit = $('#select_enigm_to_edit').val();
 	if(enigme_to_edit != "new_enigme"){
-		firebase.database().ref("enigmes_list/" + enigme_to_edit).once("value", function(v) {
+		firebase.database().ref(get_uid() + '/' + "enigmes_list/" + enigme_to_edit).once("value", function(v) {
 			v = v.val();
 			$("#edit_enigme_title").val(v.title);
 			$("#edit_enigme_content").val(v.text);
@@ -99,6 +99,9 @@ function load_data() {
 }
 
 function initialize_edition(enigme_names) {
+	//check if an user is connected...
+	need_to_be_connected();
+
 	//check if the url contains the 'egnime_id' param to set the select value on it...
 	var egnime_id = get_query_params().egnime_id;
 
@@ -136,10 +139,10 @@ function remove_riddle(){
 				return;
 	}
 	var db = firebase.database();
-	db.ref("enigmes_list/"+current_enigme).remove();
-	db.ref("enigmes_names/").once("value", function(v) {
+	db.ref(get_uid() + '/' + "enigmes_list/"+current_enigme).remove();
+	db.ref(get_uid() + '/' + "enigmes_names/").once("value", function(v) {
 			var val = v.val();
-			db.ref("enigmes_names/"+val.indexOf(current_enigme)).remove();
+			db.ref(get_uid() + '/' + "enigmes_names/"+val.indexOf(current_enigme)).remove();
 	})
 	;}
 

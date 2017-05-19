@@ -12,7 +12,7 @@ $(document).ready(function() {
 
 function get_enigme_list_names() {
 	var database = firebase.database();
-	var ref = database.ref("enigmes_names/");
+	var ref = database.ref(get_uid() + '/' + "enigmes_names/");
 	ref.once("value", function(v) {
 		var enigmes_names = [];
 		var lst = v.val();
@@ -35,6 +35,9 @@ function add_li(txt) {
 }
 
 function initialize_arrange(enigm_name_list) {
+	//check if an user is connected...
+	need_to_be_connected();
+
 	//remove the loading text...
 	fix_loading();
 
@@ -102,17 +105,17 @@ function set_successors() {
 	if (lst.length > 2) {
 		//set the links...
 		for (var i = 0; i < lst.length - 1; i++) {
-			var ref = database.ref("enigmes_list/" + lst[i] + "/next");
+			var ref = database.ref(get_uid() + '/' + "enigmes_list/" + lst[i] + "/next");
 			ref.set(lst[i + 1]);
 		}
 	} else {
 		//the list is empty just 'init' -> 'final'
-		var ref = database.ref("enigmes_list/init/next");
+		var ref = database.ref(get_uid() + '/' + "enigmes_list/init/next");
 		ref.set("final");
 	}
 
 	//reactualize the order in enigme_names
-	var ref = database.ref("enigmes_names/");
+	var ref = database.ref(get_uid() + '/' + "enigmes_names/");
 	ref.set(lst);
 }
 

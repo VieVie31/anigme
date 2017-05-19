@@ -31,6 +31,21 @@ function fix_loading() {
 	});
 }
 
+function need_to_be_connected() {
+	if (!firebase.auth().currentUser) {
+		toastr.error("You need to be connected to edit enigms...");
+		window.location.href = "./login.html"
+	}
+}
+
+function get_uid() {
+	//no user connected...
+	if (!firebase.auth().currentUser)
+		return '';
+	//return the connected user uid..
+	return firebase.auth().currentUser.uid;
+}
+
 function get_query_params() {
 	var params = {};
 	var tokens;
