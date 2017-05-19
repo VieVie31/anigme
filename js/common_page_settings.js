@@ -68,7 +68,7 @@ function get_query_params() {
 
 //fix for xss problems...
 function sanitize(str) {
-	return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+	return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/(\r\n|\n|\r)/g,"<br />");
 }
 
 String.prototype.hashCode = function() {
