@@ -85,7 +85,11 @@ function initialize_arrange(enigm_name_list) {
 	$("#waiting_spinner").children().removeClass("fa fa-spinner fa-spin");
 
 	//display the sharing url...
-	$("#share_url").text(window.location.href.split("arrange.html") + '?enigme_set_id=' + firebase.auth().currentUser.uid);
+	var share_enigm_url = window.location.href.split("arrange.html")[0] + 'anigme.html?enigme_set_id=' + firebase.auth().currentUser.uid;
+	$("#share_url").html("<a href='" + share_enigm_url +"'>" + share_enigm_url + "</a>");
+
+	//make the go to play link working...
+	$("#go_to_play").attr("href", './' + 'anigme.html?enigme_set_id=' + firebase.auth().currentUser.uid);
 }
 
 function get_ordered_list_name() {

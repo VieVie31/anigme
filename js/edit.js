@@ -130,6 +130,9 @@ function initialize_edition(enigme_names) {
 	//hide the waiting imahe and load the edition interface...
 	$("#waiting_connection").css("display", "none");
 	$("#edition_container").css("display", "block");
+
+	//make the go to play link working...
+	$("#go_to_play").attr("href", './' + 'anigme.html?enigme_set_id=' + firebase.auth().currentUser.uid);
 }
 
 function remove_riddle(){
