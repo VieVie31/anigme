@@ -15,7 +15,7 @@ function get_enigme_list_names() {
 	var ref = database.ref(get_uid() + '/' + "enigmes_names/");
 	ref.once("value", function(v) {
 		console.log(v.val()); //FIXME: not retriving the data all the time ?? why ??!!
-		
+
 		var enigmes_names = [];
 		var lst = v.val();
 		if (lst) {
@@ -27,6 +27,11 @@ function get_enigme_list_names() {
 					enigmes_names.push(lst[k]);
 			}
 		}
+
+		//FUCKING HACK FOR THE PREVIOUS FIXME : TODO -> FIXME !!!!!!!
+		$("#refresh_init").click(get_enigme_list_names);
+		$("#draggablePanelList").html('')
+		$(".edit_me").css("display", "none");
 
 		initialize_arrange(enigmes_names);
 	});

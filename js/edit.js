@@ -13,7 +13,7 @@ $(document).ready(function() {
 
 function refresh_initialization() {
 	//get the enigms names and initialize the app
-	firebase.database().ref(get_uid() + '/' + "enigmes_names/").on("value", function(v) {
+	firebase.database().ref(get_uid() + '/' + "enigmes_names/").once("value", function(v) {
 		console.log(v.val()); //FIXME: not retriving the data all the time ?? why ??!!
 		
 		var val = v.val();
