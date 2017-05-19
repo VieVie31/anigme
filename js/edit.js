@@ -6,19 +6,26 @@ $(document).ready(function() {
 			//stop to check if initialized
 			clearInterval(interval_check_firebase_initialized);
 			//get the enigms names and initialize the app
-			firebase.database().ref(get_uid() + '/' + "enigmes_names/").once("value", function(v) {
-				var val = v.val();
-				if (!val || val == [])
-					val = ["init", "final"];
-
-				//remove undefined values
-				val = remove_undefined_values(val);
-
-				initialize_edition(val);
-			});
+			refresh_initialization();
 		}
 	}, 100);
 });
+
+function refresh_initialization() {
+	//get the enigms names and initialize the app
+	firebase.database().ref(get_uid() + '/' + "enigmes_names/").on("value", function(v) {
+		console.log(v.val()); //FIXME: not retriving the data all the time ?? why ??!!
+		
+		var val = v.val();
+		if (!val || val == [])
+			val = ["init", "final"];
+
+		//remove undefined values
+		val = remove_undefined_values(val);
+
+		initialize_edition(val);
+	});
+}
 
 function remove_undefined_values(tab) {
 	//remove the undefined values
@@ -107,6 +114,9 @@ function initialize_edition(enigme_names) {
 
 	//add the options to the select listbox
 	reload_select(enigme_names, egnime_id);
+
+	//allow the user to refresh faster...
+	$("#refresh_init").click(refresh_initialization);
 
 	//load the data when change...
 	$('#select_enigm_to_edit').change(function() {

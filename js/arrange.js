@@ -14,6 +14,8 @@ function get_enigme_list_names() {
 	var database = firebase.database();
 	var ref = database.ref(get_uid() + '/' + "enigmes_names/");
 	ref.once("value", function(v) {
+		console.log(v.val()); //FIXME: not retriving the data all the time ?? why ??!!
+		
 		var enigmes_names = [];
 		var lst = v.val();
 		if (lst) {
